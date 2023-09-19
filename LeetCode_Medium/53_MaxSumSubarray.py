@@ -30,3 +30,12 @@ result = solution_instance.maxSubArray(nums)
 
 # Print the result
 print(result)
+
+# General algorithm:
+# Initialize maxSum to be the first element in the list
+# Initialize curSum to be 0
+# Iterate the list one number at a time
+# If the curSum is less than 0, reset it to 0
+# Otherwise, add it to the curSum
+# Let the max be the curSum compared to the stored max value
+# Return the result
