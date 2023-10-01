@@ -1,0 +1,8 @@
+Backtracking
+1. Define the problem and constraints - clearly understand the problem requirements and identify and limitations or rules that solutions must follow
+2. Design the recursive function - create a recursive function that explores potential solutions step-by-step, considering all possible choices and constraints to make informed decisions
+3. Base case(s) - define the stopping criteria for the recursion
+4. Make choices and explore - at each step, make a choice that leads to a potential solution. if it is valid, proceed to the next step. If not, backtrack and try other choices
+5. Backtrack - when we reach a dead-end, backtrack to the previous steps and try other altetnatives
+6. Optimize - employ optimization techniques to enhance performance
+
