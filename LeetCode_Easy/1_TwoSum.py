@@ -21,9 +21,7 @@ target = 9
 
 # Create an instance of the Solution class
 solution_instance = Solution()
-
 # Call the twoSum method on the instance and pass nums and target as arguments
 result = solution_instance.twoSum(nums, target)
-
 # Print the result
 print("Indices of the two numbers that add up to the target:", result)

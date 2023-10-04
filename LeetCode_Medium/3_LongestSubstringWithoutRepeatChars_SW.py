@@ -1,8 +1,7 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        # Create a dictionary to store the last seen index of each character.
-        char_index = {}
-        max_length = 0
+        char_index = {} # Create a dictionary to store the last seen index of each character.
+        max_length = 0 # Set max length to 0
         start = 0  # Start of the sliding window
 
         # for each character in the string

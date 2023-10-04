@@ -1,7 +1,9 @@
 # Define the Solution class
 class Solution:
     def mergeAlternately(self, word1: str, word2: str) -> str:
+        # Init the list to store the result string 
         result = []
+        # Get the minimum length
         min_len = min(len(word1), len(word2))
         
         # Merge characters alternately up to the length of the shorter word
@@ -14,7 +16,6 @@ class Solution:
             result.append(word1[min_len:])
         elif len(word2) > len(word1):
             result.append(word2[min_len:])
-
         return "".join(result)
 
 # Create an instance of the Solution class

@@ -10,12 +10,9 @@ class Solution:
 
 # Create an instance of the Solution class
 solution_instance = Solution()
-
 # Define the input string
 input_string = "Hello World"
-
 # Call the reverseWords method on the solution_instance
 result = solution_instance.reverseWords(input_string)
-
 # Print the result
 print(result)  # Output will be "World Hello"
