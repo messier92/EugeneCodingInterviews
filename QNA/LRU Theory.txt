@@ -1,0 +1,26 @@
+LRU (Least Recently Used) Cache
+O(1) time complexity for get() and put()
+
+We need a Hash map (dict) to allow O(1) lookup of items
+
+We need a Doubly Linked List 
+Stores the order of usage
+Most recently used item is at the front (head)
+Least recently used item is at the back (tail)
+Allows O(1) insertion and removal
+
+You access an item -> move to the front
+Add new item -> if full, remove from back and insert the new item at the front
+
+The code should contain the following functions:
+PREREQUISITE - Initialize Node class with key, value, prev, next
+
+__init__(self, capacity) 
+_remove(self, node)
+_add_to_front(self, node)
+def get(self, key)
+def put(self, key, value)
+
+
+
+
