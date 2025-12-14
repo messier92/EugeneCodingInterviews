@@ -1,0 +1,42 @@
+A single number is a number that appeared only once in the MyNumbers table.
+Find the largest single number. If there is no single number, report null.
+The result format is in the following example.
+
+Example 1:
+
+Input: 
+MyNumbers table:
++-----+
+| num |
++-----+
+| 8   |
+| 8   |
+| 3   |
+| 3   |
+| 1   |
+| 4   |
+| 5   |
+| 6   |
++-----+
+Output: 
++-----+
+| num |
++-----+
+| 6   |
++-----+
+
+Solution:
+1. Count the numbers that only appears once as a CTE
+2. Get the max of the subquery
+
+# Write your MySQL query statement below
+With GroupedNumbers AS (
+    SELECT m.num 
+    FROM MyNumbers m
+    GROUP BY m.num
+    HAVING COUNT(m.num) <= 1
+) 
+SELECT max(num) AS num
+FROM GroupedNumbers
+
+

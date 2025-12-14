@@ -1,0 +1,52 @@
+
+Write a solution to find managers with at least five direct reports.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Employee table:
++-----+-------+------------+-----------+
+| id  | name  | department | managerId |
++-----+-------+------------+-----------+
+| 101 | John  | A          | null      |
+| 102 | Dan   | A          | 101       |
+| 103 | James | A          | 101       |
+| 104 | Amy   | A          | 101       |
+| 105 | Anne  | A          | 101       |
+| 106 | Ron   | B          | 101       |
++-----+-------+------------+-----------+
+Output: 
++------+
+| name |
++------+
+| John |
++------+
+
+Solution:
+
+Do the CTE first - first select all managers with at least 5 direct reports
+Then join with the employee.id to get the name
+
+
+# Write your MySQL query statement below
+Select 
+    employee.name
+FROM 
+    employee
+JOIN
+    (
+     SELECT managerId
+     FROM employee
+     WHERE managerId is not null
+     GROUP by managerId
+     HAVING count(managerId) >= 5
+    ) t
+ON employee.id = t.managerId
+
+

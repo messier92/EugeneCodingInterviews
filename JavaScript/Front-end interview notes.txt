@@ -1,0 +1,59 @@
+Front-end interview notes
+
+Polyfill - A piece of JavaScript code that adds support for a feature that a browser does not natively support; a patch or fallback that makes newer web features work in older browsers.
+e.g. fetch, promise, etc...
+
+XSS - Cross-shell scripting. A web security vulnerability where an attacker injects malicious JavaScript into a webpage so that it runs in another user’s browser.
+How to prevent XSS - 
+1. Sanitize and escape user input - don't use characters like < or > but the escaped versions (&lt, &gt) instead
+2. Use CSP (Content-Security Policy)
+3. Validate and filter input on server and client - reject suspicious patterns
+4. Use modern framework with built-in security features (e.g. React, Angular, Django, Flask)
+
+JavaScript is a pass-by-value language; when arguments are passed into functions, a copy of them is made in memory. When you change the value of an argument in the function code, the original variable will NOT be affected.
+
+When an Object is passed as a function argument, what we get is a copy of a pointer to that object. And so, a copy of a pointer, is still pointing to the original object. Changing the Object
+inside a function will change the original object.
+
+Remember, JavaScript is pass-by-value - even if when dealing with Objects it gives the impression of being pass-by-reference.
+
+Difference between git rebase and git merge 
+Both commands, ‘git rebase’ and ‘git merge’, will merge branches… But ‘git rebase’ will re-write the git history to add the commits being merged at the top of the commit history (regardless of when changes were committed). In general, ‘git rebase’ will keep a cleaner history.
+
+Which HTTP Status Code represents Forbidden Access to the endpoint/resource?
+a) 503 - Service Unavailable (server error)
+b) 204 - No content (successful call but no content)
+c) 403 - Forbidden Access (authorization successful but no permission)
+d) 401 - Unauthorized (no authentication)
+e) 302 - temporary redirect
+
+Preflight request
+A preflight request is an HTTP request made by the browser before the actual request, to check the CORS status. It is an OPTIONS request to which the server needs to respond with the allowed origins, methods and headers. Preflight requests are triggered
+automatically by the browser whenever you make a fetch request to a
+domain other than your own.
+
+Which of the following are valid ways to version an API in the
+case of breaking changes?
+Adding a version number to the query parameters of the URI (api.com?version=v2)
+
+
+
+
+The Document Object Model (DOM) is a programmatic representation of a web page that allows JavaScript (or other languages) to access, modify, and manipulate the content, structure, and styles of that page. JavaScript can access elements using methods like: 
+document.getElementById("myId")
+document.querySelector(".myClass")
+document.getElementsByTagName("p")
+document.querySelector("h1").textContent = "Hi there!";
+document.querySelector("p").style.color = "blue";
+
+It connects web pages to scripts.
+Enables dynamic updates without reloading the page.
+Basis for front-end frameworks like React, Angular, Vue (which all manipulate the DOM under the hood).
+
+What is CORS?
+A web browser security feature that allows a web page from one domain to request resources from a different domain. It allows servers to specify which domains are allowed to access their resources, enabling safe communication between frontend apps and external APIs.
+Resolve by:
+- Sending the request via a proxy site 
+- Building your own proxy via express middleware with Access-Control-Allow-Origin:*
+
+

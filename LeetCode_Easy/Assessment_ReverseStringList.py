@@ -7,7 +7,6 @@ class Solution:
         l = 0
         # you need to minus 1 from the right pointer to exclude the first element at index 0, otherwise you will get index out of range
         r = len(s) - 1
-        print(r)
 
         # begin two pointers method
         while l < r:

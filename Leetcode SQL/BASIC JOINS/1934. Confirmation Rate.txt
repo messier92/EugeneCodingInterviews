@@ -1,0 +1,54 @@
+The confirmation rate of a user is the number of 'confirmed' messages divided by the total number of requested confirmation messages. The confirmation rate of a user that did not request any confirmation messages is 0. Round the confirmation rate to two decimal places.
+Write a solution to find the confirmation rate of each user.
+Return the result table in any order.
+The result format is in the following example.
+
+ 
+Example 1:
+
+Input: 
+Signups table:
++---------+---------------------+
+| user_id | time_stamp          |
++---------+---------------------+
+| 3       | 2020-03-21 10:16:13 |
+| 7       | 2020-01-04 13:57:59 |
+| 2       | 2020-07-29 23:09:44 |
+| 6       | 2020-12-09 10:39:37 |
++---------+---------------------+
+Confirmations table:
++---------+---------------------+-----------+
+| user_id | time_stamp          | action    |
++---------+---------------------+-----------+
+| 3       | 2021-01-06 03:30:46 | timeout   |
+| 3       | 2021-07-14 14:00:00 | timeout   |
+| 7       | 2021-06-12 11:57:29 | confirmed |
+| 7       | 2021-06-13 12:58:28 | confirmed |
+| 7       | 2021-06-14 13:59:27 | confirmed |
+| 2       | 2021-01-22 00:00:00 | confirmed |
+| 2       | 2021-02-28 23:59:59 | timeout   |
++---------+---------------------+-----------+
+
+Solution:
+1. First get the sum when action='confirmed' and action = 'timeout for each user_id
+2. Then calculate the confirmation rate with the following formula:
+confirmed/confirmed+timeout
+3. Use COALESCE to handle NULL values
+4. Must use LEFT JOIN to account for null values in the final output (e.g. 6 has no records in inner join)
+
+# Write your MySQL query statement below
+SELECT signups.user_id, 
+ROUND(COALESCE(COALESCE(cte_a.confirmedcount,0)/(COALESCE(cte_a.confirmedcount,0) + COALESCE(cte_a.tocount,0)),0),2) AS confirmation_rate
+FROM 
+signups
+LEFT JOIN
+(
+    SELECT user_id, SUM(CASE WHEN action = 'confirmed' THEN 1 ELSE 0 END) as confirmedcount, 
+    SUM(CASE WHEN action = 'timeout' THEN 1 ELSE 0 END) as tocount
+    from confirmations
+    GROUP BY
+    user_id
+) as cte_a
+ON
+signups.user_id = cte_a.user_id
+

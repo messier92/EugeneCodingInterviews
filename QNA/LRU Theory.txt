@@ -1,26 +1,116 @@
-LRU (Least Recently Used) Cache
-O(1) time complexity for get() and put()
+To implement a LRU, we need a doubly linked list and a hashmap for O(1) lookup.
+In a doubly linked list, each node has two pointers: one pointing to the next node and one pointing to the previous node in the sequence.
 
-We need a Hash map (dict) to allow O(1) lookup of items
+- Implement a class DListnode with key, value, prev and next
+- Implement a class LRUCache with cache and head and tail DListnodes called head and tail
+- The LRU cache has the following subfunctions: 
+a. Remove node (moves node from position - this is called by the other subfunctions move to head and poptail), 
+b. Add to head (add a new item to the head), 
+c. Move to head (move an already existing node to the head), 
+d. Pop tail (when cache is full and need to make space for new item)
+- The LRU cache has the following main functions:
+a. get - use a hashmap to get the value and move the item to the head
+b. put - if the key already exists, move the item to the head
+- if the item does not exist, create a new head 
+check if the cache is already full and run pop tail to remove the last item
 
-We need a Doubly Linked List 
-Stores the order of usage
-Most recently used item is at the front (head)
-Least recently used item is at the back (tail)
-Allows O(1) insertion and removal
+class DListNode:
+    """Represents a node in the Doubly Linked List."""
+    def __init__(self, key=0, val=0):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
 
-You access an item -> move to the front
-Add new item -> if full, remove from back and insert the new item at the front
+#### **B. LRUCache Class**
 
-The code should contain the following functions:
-PREREQUISITE - Initialize Node class with key, value, prev, next
+class LRUCacheClassic:
+    """
+    Implements a classic LRU Cache using a Dictionary (Hash Map) and a Doubly Linked List.
+    Time Complexity:
+    - get: O(1)
+    - put: O(1)
+    """
 
-__init__(self, capacity) 
-_remove(self, node)
-_add_to_front(self, node)
-def get(self, key)
-def put(self, key, value)
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        # Hash map: key -> DListNode. Used for O(1) access.
+        self.cache = {}
+        
+        # Doubly Linked List: Used to maintain the order of use.
+        # 'head' points to the *most* recently used (MRU).
+        # 'tail' points to the *least* recently used (LRU).
+        # We use 'dummy' head and tail nodes to simplify edge case handling.
+        self.head = DListNode()
+        self.tail = DListNode()
+        
+        # Link the dummy head and tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    # --- Helper Methods for Doubly Linked List Operations ---
+
+    def _remove_node(self, node: DListNode):
+        """Removes a given node from the linked list."""
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def _add_to_head(self, node: DListNode):
+        """Adds a node right after the dummy head (making it MRU)."""
+        node.next = self.head.next
+        node.prev = self.head
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _move_to_head(self, node: DListNode):
+        """Moves an existing node to the head (MRU)."""
+        self._remove_node(node)
+        self._add_to_head(node)
+
+    def _pop_tail(self) -> DListNode:
+        """Removes and returns the node just before the dummy tail (the LRU node)."""
+        lru_node = self.tail.prev
+        self._remove_node(lru_node)
+        return lru_node
+
+    # --- Main LRU Methods ---
+
+    def get(self, key: int) -> int:
+        if key not in self.cache:
+            return -1
+        
+        node = self.cache[key]
+        self._move_to_head(node) # Mark as MRU
+        return node.val
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            # 1. Key exists: Update value and move to head (MRU)
+            node = self.cache[key]
+            node.val = value
+            self._move_to_head(node)
+        else:
+            # 2. Key is new: Create a new node
+            new_node = DListNode(key, value)
+            self.cache[key] = new_node
+            self._add_to_head(new_node) # Add to head (MRU)
+
+            # Check capacity
+            if len(self.cache) > self.capacity:
+                # Capacity is full: remove the LRU node from the list and map
+                lru_node = self._pop_tail()
+                del self.cache[lru_node.key]
 
 
-
-
+# --- Example Usage ---
+cache_classic = LRUCacheClassic(2)
+print("\n--- Classic Implementation ---")
+cache_classic.put(1, 1)
+cache_classic.put(2, 2)
+print(f"Get(1): {cache_classic.get(1)}") # returns 1
+cache_classic.put(3, 3) # Evicts key 2
+print(f"Get(2): {cache_classic.get(2)}") # returns -1
+print(f"Get(1): {cache_classic.get(1)}") # returns 1
+print(f"Get(3): {cache_classic.get(3)}") # returns 3

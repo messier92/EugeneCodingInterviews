@@ -1,0 +1,50 @@
+
+Write a solution to find the second highest distinct salary from the Employee table. If there is no second highest salary, return null (return None in Pandas).
+
+The result format is in the following example.
+
+Example 1:
+
+Input: 
+Employee table:
++----+--------+
+| id | salary |
++----+--------+
+| 1  | 100    |
+| 2  | 200    |
+| 3  | 300    |
++----+--------+
+Output: 
++---------------------+
+| SecondHighestSalary |
++---------------------+
+| 200                 |
++---------------------+
+
+
+Solution:
+
+Select the max salary that is lesser than the max salary
+Returns null if it does not exist
+
+SELECT max(salary) as SecondHighestSalary 
+FROM employee
+WHERE employee.salary < (
+SELECT max(salary)
+FROM employee
+)
+
+
+Alternate solution:
+
+SELECT
+    COALESCE(T1.salary, NULL) AS SecondHighestSalary
+FROM
+    (SELECT 1) AS dummy  -- Creates one row to LEFT JOIN against
+LEFT JOIN
+    (
+        SELECT DISTINCT salary
+        FROM employee
+        ORDER BY salary DESC -- Ordering is crucial for 'OFFSET' to mean 'N-th highest'
+        LIMIT 1 OFFSET 1
+    ) AS T1 ON 1=1;
