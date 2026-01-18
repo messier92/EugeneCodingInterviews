@@ -1,0 +1,59 @@
+
+Write a solution to find the people who have the most friends and the most friends number.
+
+The test cases are generated so that only one person has the most friends.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+RequestAccepted table:
++--------------+-------------+-------------+
+| requester_id | accepter_id | accept_date |
++--------------+-------------+-------------+
+| 1            | 2           | 2016/06/03  |
+| 1            | 3           | 2016/06/08  |
+| 2            | 3           | 2016/06/08  |
+| 3            | 4           | 2016/06/09  |
++--------------+-------------+-------------+
+Output: 
++----+-----+
+| id | num |
++----+-----+
+| 3  | 3   |
++----+-----+
+
+Solution:
+
+
+WITH CombinedCounts AS (
+    -- Get all accepted counts
+    SELECT accepter_id AS user_id, 1 AS accepted, 0 AS requested
+    FROM requestaccepted
+    UNION ALL
+    -- Get all requested counts
+    SELECT requester_id AS user_id, 0 AS accepted, 1 AS requested
+    FROM requestaccepted
+),
+TotalCounts AS (
+    SELECT
+        user_id,
+        SUM(accepted) AS accepted_count,
+        SUM(requested) AS requested_count,
+        SUM(accepted + requested) AS total_count
+    FROM
+        CombinedCounts
+    GROUP BY
+        user_id
+)
+SELECT
+    user_id as id,
+    total_count as num
+FROM
+    TotalCounts
+ORDER BY
+    total_count DESC  -- Sort from highest to lowest
+LIMIT 1;             -- Take only the first row

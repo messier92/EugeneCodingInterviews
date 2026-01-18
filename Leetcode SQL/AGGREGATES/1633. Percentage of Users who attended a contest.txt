@@ -59,7 +59,7 @@ FROM
 GROUP BY
     r.contest_id
 ORDER BY
-    percentage DESC, -- 1. Order by percentage in descending order
-    r.contest_id ASC;  -- 2. In case of a tie, order by contest_id in ascending order
+    percentage DESC, 
+    r.contest_id ASC;  
 
 

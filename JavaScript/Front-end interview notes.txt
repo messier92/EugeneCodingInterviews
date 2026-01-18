@@ -36,9 +36,6 @@ Which of the following are valid ways to version an API in the
 case of breaking changes?
 Adding a version number to the query parameters of the URI (api.com?version=v2)
 
-
-
-
 The Document Object Model (DOM) is a programmatic representation of a web page that allows JavaScript (or other languages) to access, modify, and manipulate the content, structure, and styles of that page. JavaScript can access elements using methods like: 
 document.getElementById("myId")
 document.querySelector(".myClass")
@@ -56,4 +53,27 @@ Resolve by:
 - Sending the request via a proxy site 
 - Building your own proxy via express middleware with Access-Control-Allow-Origin:*
 
+Promises in JavaScript
+In JavaScript, a Promise is an object representing the eventual completion (or failure) of an asynchronous operation and its resulting value.
+Pending: The initial state; the operation has not completed yet.
+
+Fulfilled (Resolved): The operation completed successfully, and the promise now has a resulting value.
+Rejected: The operation failed, and the promise has a reason for the failure (usually an error).
+
+What happens when user keys in a URL into a browser
+
+1. DNS Lookup - Finding the address
+Convert the URL (in string) to machine-friendly IP
+Lookup to ISP
+2. Establishing a connection
+TLS/SSL Handshake
+3. HTTP request
+Send HTTP request over
+4. Server Processes and Responds
+Status Code - 200 (OK) or 404 (Not Found)
+Content - HTML code
+5. Rendering the Page
+DOM tree
+CSSOM
+Paint
 

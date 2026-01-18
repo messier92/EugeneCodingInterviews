@@ -1,0 +1,68 @@
+Initially, all products have price 10.
+
+Write a solution to find the prices of all products on the date 2019-08-16.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+Example 1:
+
+Input: 
+Products table:
++------------+-----------+-------------+
+| product_id | new_price | change_date |
++------------+-----------+-------------+
+| 1          | 20        | 2019-08-14  |
+| 2          | 50        | 2019-08-14  |
+| 1          | 30        | 2019-08-15  |
+| 1          | 35        | 2019-08-16  |
+| 2          | 65        | 2019-08-17  |
+| 3          | 20        | 2019-08-18  |
++------------+-----------+-------------+
+Output: 
++------------+-------+
+| product_id | price |
++------------+-------+
+| 2          | 50    |
+| 1          | 35    |
+| 3          | 10    |
++------------+-------+
+Solution:
+
+WITH product_changedate_price AS (
+    SELECT 
+        product_id,
+        new_price,
+        change_date
+    FROM products
+    WHERE change_date <= '2019-08-16'
+),
+-- Find the latest change date for each product
+LatestChangeDate AS (
+    SELECT
+        product_id,
+        MAX(change_date) AS max_change_date
+    FROM product_changedate_price
+    GROUP BY product_id
+),
+-- Get all distinct product IDs (to ensure we include products with no changes)
+AllProducts AS (
+    SELECT DISTINCT product_id
+    FROM products
+)
+-- Final SELECT to combine the latest price and apply the default
+SELECT
+    ap.product_id,
+    COALESCE(p.new_price, 10) AS price
+FROM
+    AllProducts ap
+LEFT JOIN
+    LatestChangeDate lcd
+    ON ap.product_id = lcd.product_id
+LEFT JOIN
+    products p
+    -- Join to the 'products' table using the product_id AND the max_change_date
+    ON ap.product_id = p.product_id AND lcd.max_change_date = p.change_date
+ORDER BY
+    ap.product_id;

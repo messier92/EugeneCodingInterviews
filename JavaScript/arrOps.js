@@ -1,6 +1,5 @@
 // Array chunking
 
-
 function chunk(array,size) {
     const res = []
     let index = 0
